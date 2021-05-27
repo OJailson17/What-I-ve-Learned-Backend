@@ -1,31 +1,34 @@
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from "../../models/UserModel.js";
-import {registerValidation, loginValidation} from '../validation/index.js'
-import config from '../../config/index.js'
+import {
+  registerValidation,
+  loginValidation,
+} from "../validation/inputValidation.js";
+import config from "../../config/index.js";
 
 // Generates JWT token
 const generateToken = async (params) => {
   return jwt.sign(params, config.SECRET_HASH_TOKEN, {
-    expiresIn: 86400
-  })
-}
+    expiresIn: 86400,
+  });
+};
 
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   // Data validation
-  const {error} = await registerValidation(req.body)
-  if(error) return res.status(400).json({error: error.details[0].message})
+  const { error } = await registerValidation(req.body);
+  if (error) return res.status(400).json({ error: error.details[0].message });
 
   // Check if email exist
-  const emailExist = await User.findOne({email})
-  if(emailExist) return res.status(400).json({msg: "Email already exist"})
+  const emailExist = await User.findOne({ email });
+  if (emailExist) return res.status(400).json({ msg: "Email already exist" });
 
   // Hash password
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
-  
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   // Create new User
   const user = new User({
     name,
@@ -33,43 +36,45 @@ export const registerUser = async (req, res) => {
     password: hashedPassword,
   });
 
-  
   try {
     // Save user into database
     const savedUser = await user.save();
 
     // Generate jwt token
-    const token = await generateToken({id: user.id})
+    const token = await generateToken({ id: user.id });
 
     // Reset the password
-    savedUser.password = undefined
+    savedUser.password = undefined;
 
-    // Send response
+    // Send the response
     res.json({ savedUser, token });
-
   } catch (error) {
-    res.status(400).json({error: error})
+    // Send if some error occor
+    res.status(400).json({ error: error });
   }
 };
 
 export const loginUser = async (req, res) => {
-  const {email, password} = req.body
+  const { email, password } = req.body;
 
-    // Data validation
-    const {error} = await loginValidation(req.body)
-    if(error) return res.status(400).json({error: error.details[0].message})
+  // Data validation
+  const { error } = await loginValidation(req.body);
+  if (error) return res.status(400).json({ error: error.details[0].message });
 
-    // Check if email exist
-    const user = await  User.findOne({email}).select('+password')
-    if(!user) return res.status(400).json({error: "Email doesn't exist"})
+  // Check if email exist
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) return res.status(400).json({ error: "Email doesn't exist" });
 
-    // Check password
-    const validPass = await bcrypt.compare(password, user.password)
-    if(!validPass) return res.status(400).json({error: "Invalid Password"})
+  // Check password
+  const validPass = await bcrypt.compare(password, user.password);
+  if (!validPass) return res.status(400).json({ error: "Invalid Password" });
 
-    const token = await generateToken({id: user.id})
+  // Generate jwt token
+  const token = await generateToken({ id: user.id });
 
-    user.password = undefined
+  // Reset the password
+  user.password = undefined;
 
-    res.json({logged: true, user, token})
-}
+  // Send the response
+  res.json({ logged: true, user, token });
+};

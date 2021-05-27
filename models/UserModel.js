@@ -22,13 +22,14 @@ const userSchema = new Schema({
     required: true,
     trim: true,
     minLength: 6,
+    select: false,
   },
   posts: [
     {
       title: String,
       body: String,
-      category: String
-    }
+      category: String,
+    },
   ],
 });
 

@@ -9,15 +9,14 @@ import { getPosts } from "../components/posts/getPosts.js";
 import { getUser } from "../components/users/userController.js";
 import { getUsers } from "../components/users/userController.js";
 
-import authMiddleware from '../components/middlewares/auth.js'
+import authMiddleware from "../components/middlewares/auth.js";
 
 const router = Router();
 
 const routes = (app) => {
-
   // !Authentication Routes
 
-  // @route POST /api/v1/user/register 
+  // @route POST /api/v1/user/register
   // desc register the user in the database
   // access Private
   app.post("/api/v1/user/register", registerUser); // Register user
@@ -37,7 +36,7 @@ const routes = (app) => {
   // @route GET /api/v1/users/
   // desc get all users from database
   // access Public
-  app.get("/api/v1/users", getUsers) // Get all users
+  app.get("/api/v1/users", getUsers); // Get all users
 
   // !Posts Routes
 
@@ -55,12 +54,12 @@ const routes = (app) => {
   // desc create a post
   // access Private
   app.patch("/api/v1/:userId/post/create", createPost); // Create a post
-  
+
   // @route PATCH /api/v1/:userId/post/:postId/edit
   // desc edit the post according to the post id
   // access Private
   app.patch("/api/v1/:userId/post/:postId/edit", editPost); // Edit a post
-  
+
   // @route PATCH /api/v1/:userId/post/:postId/delete
   // desc delete the post according to the post id
   // access Public
