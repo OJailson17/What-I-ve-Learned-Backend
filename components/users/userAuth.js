@@ -57,7 +57,8 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  // Data validation
+  try {
+      // Data validation
   const { error } = await loginValidation(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -77,4 +78,8 @@ export const loginUser = async (req, res) => {
 
   // Send the response
   res.json({ logged: true, user, token });
+  
+  } catch (error) {
+    res.status(400).json({error})
+  }
 };
