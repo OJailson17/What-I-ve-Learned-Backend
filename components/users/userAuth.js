@@ -47,7 +47,7 @@ export const registerUser = async (req, res) => {
     savedUser.password = undefined;
 
     // Send the response
-    res.json({ savedUser, token });
+    res.json({ savedUser, token, logged: true });
   } catch (error) {
     // Send if some error occor
     res.status(400).json({ error: error });
