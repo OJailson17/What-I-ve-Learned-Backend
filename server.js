@@ -1,4 +1,6 @@
 import express from "express";
+import methodOverride from 'method-override'
+import cors from 'cors'
 
 import config from "./config/index.js";
 import db from "./database/db.js";
@@ -10,6 +12,8 @@ const { PORT, MONGODB_URI } = config;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
+app.use(cors())
 
 routes(app);
 db(MONGODB_URI);
