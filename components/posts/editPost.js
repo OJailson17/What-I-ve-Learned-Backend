@@ -11,6 +11,7 @@ export const editPost = async (req, res) => {
           "posts.$.title": title,
           "posts.$.body": body,
           "posts.$.category": category,
+          "post.$.postDate": Date.now()
         },
       }
     );

@@ -24,11 +24,19 @@ const userSchema = new Schema({
     minLength: 6,
     select: false,
   },
+  registerDate: {
+    type: Date,
+    defeault: Date.now()
+  },
   posts: [
     {
       title: String,
       body: String,
       category: String,
+      postDate: {
+        type: Date,
+        default: Date.now()
+      }
     },
   ],
 });

@@ -13,6 +13,7 @@ export const createPost = async (req, res) => {
               title,
               body,
               category,
+              postDate: Date.now()
             },
           ],
         },
