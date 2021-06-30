@@ -9,6 +9,7 @@ export const getUser = async (req, res) => {
       // Yes, it's a valid ObjectId, proceed with `findById` call.
       const user = await User.findById(id);
       if (!user) return res.status(400).json({ error: "User not found" });
+      
       res.json({ user });
     }
   } catch (error) {

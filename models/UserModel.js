@@ -26,7 +26,7 @@ const userSchema = new Schema({
   },
   registerDate: {
     type: Date,
-    defeault: Date.now()
+    default: Date.now()
   },
   posts: [
     {

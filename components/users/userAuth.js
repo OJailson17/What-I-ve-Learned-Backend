@@ -23,7 +23,7 @@ export const registerUser = async (req, res) => {
 
   // Check if email exist
   const emailExist = await User.findOne({ email });
-  if (emailExist) return res.status(400).json({ msg: "Email already exist" });
+  if (emailExist) return res.status(400).json({ error : "Email already exist" });
 
   // Hash password
   const salt = await bcrypt.genSalt(10);
