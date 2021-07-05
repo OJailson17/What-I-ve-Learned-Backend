@@ -7,7 +7,7 @@ import db from "./database/db.js";
 import routes from "./routes/index.js";
 
 const app = express();
-const { PORT, MONGODB_URI } = config;
+const { MONGODB_URI } = config;
 
 // Middleware
 app.use(express.json());
@@ -19,5 +19,5 @@ routes(app);
 db(MONGODB_URI);
 
 // Port setup
-const port = PORT || 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
