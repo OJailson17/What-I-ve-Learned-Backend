@@ -13,7 +13,7 @@ const { MONGODB_URI } = config;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
-app.use(cors())
+app.use(cors({origin: "https://what-i-ve-learned-frontend.herokuapp.com/"}))
 
 routes(app);
 db(MONGODB_URI);
